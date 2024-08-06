@@ -1,0 +1,102 @@
+<!doctype html>
+<head>
+    {% load static %}
+    <title>RedAce -HOME-</title>
+    <link rel="stylesheet" type="text/css" href='{% static "node_modules/bootstrap/dist/css/bootstrap.css" %}' />
+    <link rel="stylesheet" type="text/css" href='{% static "accounts/css/home.css" %}' />
+    <script src='{% static "accounts/js/logout.js" %}'></script>
+</head>
+
+<body>
+    <div class="container">
+        <header class="blog-header py-3">
+            <div class="row flex-nowrap justify-content-between align-items-center">
+                <div class="col-4 pt-1">
+                    <h6 class="user-name">login user <br>-<span> {{ user.username }} </span>-
+                </div>
+                <div class="col-4 text-center">
+                    <h2>RedAce</h2>
+                </div>
+                <div class="col-4 d-flex justify-content-end align-items-center">
+                    <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'account_logout' %}">Logout</a>
+                </div>
+            </div>
+        </header>
+        <div class="jumbotron">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="h-100">
+                        <div class="align-middle">
+                            <button type="button" class="btn1" onclick="window.open('{% url 'map3d:default' %}')">GIS Application</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="h-100">
+                        <div class="align-middle">
+                            <button type="button" class="btn2" onclick="window.open('http://0.0.0.0:8000/')" target="_blank">JupyterHub</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+
+        Projects:
+        {% if projects %}
+            {% for project in projects %}
+                <p>{{ project }}:</p>
+
+                {% if spectra_test  %}
+                    <select class="spectra_list" name="spectra_list">
+                        <option value="" disabled>spectrum</option>
+                        {% for spectrum in spectra_test %}
+                            {% for share_project in spectrum.share_project.all %}
+                                {% if share_project == project %}
+                                    <option value="{{ spectrum }}">{{ spectrum }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </select>
+                {% else %}
+                    You Don't have any spectrum...<br>
+                {% endif %}
+                
+            {% endfor %}
+        {% else %}
+            No affiliation.
+        {% endif %}
+
+        <br><br>
+
+        {% if collections %}
+            {% block collection %}
+                collections<br>
+                <a href="{% url 'spectra:collection' %}">collection</a><br>
+                {% url 'spectra:collection' %}
+                {% include 'spectra/collection.html' %}
+
+                {% if groups %}
+                    {{ groups.name }}<br>
+                {% else %}
+                    No groups affiliation.<br>
+                {% endif %}
+            {% endblock %}
+        {% else %}
+            You Don't have any collection...<br>
+        {% endif %}
+        
+        <br>
+        
+        <div class="align-middle">
+            <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'accounts:create_project' %}">create_project</a>
+        </div>
+
+        <div class="align-middle">
+            <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'accounts:join_project' %}">join_project</a>
+        </div>
+
+    </div>
+</body>
+
