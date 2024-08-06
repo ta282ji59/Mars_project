@@ -1,0 +1,24 @@
+<!doctype html>
+<head>
+{% load static %}
+
+
+<!-- <script>
+
+</script> -->
+</head>
+
+<body>
+	<form action="" method="POST">
+		{% csrf_token %}
+		instrument: {{ form.instrument }}<br>
+		path: {{ form.path }}<br>
+		pixel(x,y): {{ form.x_pixel }} {{ form.y_pixel }}<br>
+		wavelength: {{ form.wavelength }}<br>
+		reflectance: {{ form.reflectance }}<br>
+		<!-- mineral_id: {{ form.mineral_id }}<br> -->
+		latitude: {{ form.latitude }}<br>
+		longitude: {{ form.longitude }}<br>
+		<input type="submit" value="register"/>
+	</form>
+</body>

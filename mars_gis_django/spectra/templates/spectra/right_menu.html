@@ -1,0 +1,43 @@
+<!--
+    ------------------------------------------------------------------------------
+   {% for spectrum in record_spectra.dygraphs_spectra %}
+    </table>
+    <table align="center" border="1" width="475">
+    <tr>
+        <td width="100">{{spectrum.rec.instrument}}</td>
+        <td width="100">Id: {{spectrum.rec.data_id}}</td>
+    </tr>
+    <tr>
+     <td width="100">Latitude: {{spectrum.rec.latitude}}</td>
+     <td width="100">Longitude: {{spectrum.rec.longitude}}</td>
+    </tr>
+    <tr>
+     <td width="100">X Pixel: {{spectrum.rec.x_pixel}}</td>
+     <td width="100">Y Pixel: {{spectrum.rec.y_pixel}}</td>
+    </tr>
+   </table>
+     <button type="button" name="id" value="{{spectrum.rec.id}}" onclick="move_map({{ spectrum.rec.id }}, {{ record_jump }})">Jump the area</button>
+
+     <div class="plot_rightmenu">
+     <div id="{{spectrum.id_graph}}" style="width:480px; height:300px;"></div>
+     <script type="text/javascript">
+         var graph = document.getElementById("{{spectrum.id_graph}}");
+         var config = {labels: [ "wavelength", "reflectance" ], showRangeSelector: true};
+         var data = [{{spectrum.data}}];
+         g = new Dygraph(graph, data, config);
+     </script>
+     </div>
+     <div class="hidden_box">
+       <label for="{{spectrum.rec.id}}">Edit</label>
+       <input class="Edit_btn" type="checkbox" id="{{spectrum.rec.id}}" value="{{spectrum.rec.id}}"></input><br>
+      <div class="created_description">
+       {{spectrum.rec.description}}<br><br>
+      </div>
+
+      <div class="hidden_show">
+       <input type="text" id="{{spectrum.rec.latitude}}" value="{{spectrum.rec.description}}"></input>
+        <button type="submit" onclick="update_description({{spectrum.rec.latitude}});">Update</button><br>
+      </div>
+     </div>
+     ------------------------------------------------------------------------------
+   {% endfor %} -->

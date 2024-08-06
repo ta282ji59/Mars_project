@@ -1,0 +1,39 @@
+<!doctype html>
+<head>
+{% load static %}
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.css' %}" /> -->
+
+<h2 class="user-name">@{{ user.username }}</h2><br>
+{% for spectrum in dygraphs_spectra %}
+
+ <div class="row">
+ 	<div class="col-md-2">
+ 		{{spectrum.rec.instrument}}<br>
+   {{spectrum.rec.latitude}}<br>
+   {{spectrum.rec.longitude}}
+
+
+   <!-- <form name={{spectrum.rec.id}} method="post">
+    {% csrf_token %}
+    <button type="submit" name="test" id={{spectrum.rec.id}} value="{{ spectrum.rec.id }}" onclick="window.open('{% url 'map3d:default' %}', '_blank')">
+    <button id={{spectrum.rec.id}} onclick=jump_gis(id)>
+   </form> -->
+   <!-- <form onclick="window.open('{% url 'map3d:default' %}', '_blank')" method="post"> -->
+   <!-- <form action="{% url 'map3d:default' %}" target="_blank" method="post"> -->
+   <!-- <form action="{% url 'map3d:jump' %}" target="_blank" method="post"> -->
+   <form action="{% url 'map3d:default' %}" target="_blank" method="post">
+   {% csrf_token %}
+   <button type="submit" name="id" value="{{spectrum.rec.id}}">Go to GIS</button>
+   </form>
+ 	</div>
+ 	<div class="col-md-5">{% include 'spectra/dygraphs.html' %}</div>
+ 	<div class="col-md-5">{% include 'spectra/leaflet.html' %}</div>
+
+ </div>
+{% endfor %}
+
+<!-- <script>
+function jump_gis(id){
+ // alert(id);
+}
+</script> -->

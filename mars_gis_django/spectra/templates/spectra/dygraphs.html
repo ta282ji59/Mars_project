@@ -1,0 +1,20 @@
+{% load static %}
+<!-- aaaaaaaaaa<br> -->
+<script type="text/javascript" src="{% static 'dygraphs/dist/dygraph.js' %}"></script>
+
+<div id="{{spectrum.id_graph}}" style="margin: 10px auto; width:512px; height:300px;"></div>
+<script type="text/javascript">
+    // document.write("bbbbbbbbbb");
+    var graph = document.getElementById("{{spectrum.id_graph}}");
+    var config = {labels: [ "wavelength", "reflectance" ]};
+    var data = [{{spectrum.data}}];
+    // document.write("cccccccccc");
+
+    console.log(graph);
+    // document.write(data)
+    // document.write(wavelength)
+    // var data = [wavelength,reflectance];
+
+    g = new Dygraph(graph, data, config);
+    // document.write("dddddddddd");
+</script>

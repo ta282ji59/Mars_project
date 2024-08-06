@@ -1,0 +1,28 @@
+<!doctype html>
+<head>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.css' %}" />
+
+
+</head>
+
+<body>
+<!-- {{collection_id}}<br> -->
+{% for collection in collections %}
+ {{collection.description}}<br>
+ {{collection.owner}}<br>
+{% endfor %}
+
+{% for spectrum in dygraphs_spectra %}
+
+
+<div class="row">
+	<div class="col-md-2">
+		{{spectrum.rec.instrument}}<br>
+	</div>
+	<div class="col-md-5">{% include 'spectra/dygraphs.html' %}</div>
+	<div class="col-md-5">{% include 'spectra/leaflet.html' %}</div>
+
+</div>
+{% endfor %}
+</body>

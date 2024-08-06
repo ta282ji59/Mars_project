@@ -1,0 +1,18 @@
+<!doctype html>
+<head>
+{% load static %}
+
+
+<!-- <script>
+
+</script> -->
+</head>
+
+<body>
+	<form action="" method="POST">
+		{% csrf_token %}
+		description: {{ form.description }}<br>
+		owner: {{ form.owner }}<br>
+		<input type="submit" value="register"/>
+	</form>
+</body>
