@@ -1,0 +1,178 @@
+version: "3"
+services:
+  ### Reverseproxy server ###
+  nginx:
+    # image: nginx:latest
+    image: redace1/nginx:5.0
+    container_name: redace1_nginx
+    ports:
+      - "88:80"
+    volumes:
+      # - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./nginx/uwsgi_params:/etc/nginx/uwsgi_params
+      - ./mars_gis_django/collect_static:/collect_static
+    depends_on:
+      - django
+    networks:
+      redace1_network:
+        ipv4_address: 172.16.238.6
+      # jupyterhub_network:
+      #   aliases:
+      #     - nginx
+
+  ### Django ###
+  django:
+    # build: ./mars_gis_django
+    # image: redace_django_gdal:20231028v3.1
+    image: redace1/django:5.0
+    container_name: redace1_django
+    restart: always
+    # entrypoint: ["bash","./wait-for-postgis.sh"]
+    working_dir: /code
+    volumes:
+      - ./mars_gis_django:/code
+      - ./mars_gis_django/mars_data:/mars_data
+      # - ./todatabase_test_usui_v1:/mnt ###test
+      # - ../../git/mars_data_distributed:/mars_data_distributed
+      - ./jupyterhub/data:/data
+    environment:
+      - DJANGO_SETTINGS_MODULE=mars_gis_django.settings
+    depends_on:
+      - postgis
+      - mapserver
+      - terrainserver
+    expose:
+      - "8001"
+    privileged: true
+    command: sh /code/start.sh
+    # command: uwsgi --socket :8001 --module mars_gis_django.wsgi
+    networks:
+      redace1_network:
+        ipv4_address: 172.16.238.24
+
+  ### JupyterHub ###
+  # jupyterhub:
+  #   env_file: .env
+  #   build: jupyterhub
+  #   image: jupyterhub_customized
+  #   hostname: jupyterhub
+  #   volumes:
+  #     - "./jupyterhub/jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py:ro"
+  #     - "/var/run/docker.sock:/var/run/docker.sock"
+  #   ports:
+  #     - 8000:8000
+  #   networks:
+  #     redace1_network:
+  #       ipv4_address: 172.16.238.7
+  #     jupyterhub_network:
+  #       aliases:
+  #         - jupyterhub
+  #   environment:
+  #     # Name of the Docker image for the single-user servers
+  #     DOCKER_JUPYTER_IMAGE: ${DOCKER_JUPYTER_IMAGE}
+  #     # The name of the Docker network used by the services
+  #     DOCKER_NETWORK_NAME: ${COMPOSE_PROJECT_NAME}_jupyterhub_network
+  #     # The IP address of the Hub service within the docker network
+  #   deploy:
+  #     replicas: 1
+  #     placement:
+  #       constraints:
+  #         - node.role == manager
+
+  # # Configuration for the single-user servers
+  # jupyterlab:
+  #   image: ${DOCKER_JUPYTER_IMAGE}
+  #   command: echo
+
+  ### Mapserver ###
+  mapserver:
+    # image: mapserver_nginx_20190222/redace:1.0
+    image: redace1/mapserver:5.0
+    container_name: redace1_mapserver
+    volumes:
+      - ./mapserver:/maps
+    depends_on:
+      - postgis
+    expose:
+      - "80"
+    networks:
+      redace1_network:
+        ipv4_address: 172.16.238.3
+
+  ### Terrainserver ###
+  terrainserver:
+    # image: terrainserver_nginx_20190222/redace:1.0
+    image: redace1/terrainserver:5.0
+    container_name: redace1_terrainserver
+    environment:
+      - SERVE_STATIC=0
+    volumes:
+      - ./terrain/tilesets/terrain:/data/tilesets/terrain
+    expose:
+      - "8000"
+    networks:
+      redace1_network:
+        ipv4_address: 172.16.238.4
+
+  ### Postgis ###
+  postgis:
+    # image: database_postgis_20190222/redace:1.0
+    image: redace1/postgis:5.0
+    container_name: redace1_postgis
+    environment:
+      POSTGRES_PASSWORD: anpanman
+      POSTGRES_USER: m5211164
+      POSTGRES_DB: mars
+    volumes:
+      - ./db/PostGIS_volume:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    networks:
+      redace1_network:
+        ipv4_address: 172.16.238.5
+
+  ### JupyterHub ###
+  jupyterhub:
+    # image: redace_jupyterhub:v1.3
+    image: redace1/jupyterhub:5.0
+    # build:
+    #   context: ./jupyterhub
+    #   dockerfile: Dockerfile
+    container_name: redace1_jupyterhub
+    depends_on:
+      - postgis
+    ports:
+      - 8000:8000
+    environment:
+      - POSTGRES_HOST:postgis
+      - POSTGRES_PORT:5432
+      - POSTGRES_USER:m5211164
+      - POSTGRES_PASSWORD:anpanman
+      - DJANGO_SETTINGS_MODULE=mars_gis_django.settings
+    links: 
+      - postgis:postgis
+    volumes:
+      - ./mars_gis_django:/code
+      - ./jupyterhub/config:/srv/jupyterhub/config
+      - ./jupyterhub/hook-script:/srv/jupyterhub/hook-script
+      - ./jupyterhub/data:/data
+    command: jupyterhub --config /srv/jupyterhub/config/jupyterhub_config.py
+    tty: true
+    networks:
+      redace1_network:
+        ipv4_address: 172.16.238.10
+
+networks:
+  redace1_network:
+    name: redace1_network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+#   jupyterhub_network:
+#     driver: overlay
+
+# volumes:
+#   jupyterhub_data:
