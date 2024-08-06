@@ -1,11 +1,9 @@
+# Directory
 __MACOSX
 db
-jupyterhub
-mapserver
-mars_gis_django
-nginx
 terrain
-.env
-docker-compose.yml
-docker-down-up.sh
-ipconfig.exe
+mars_gis_django/collect_static
+mars_gis_django/mars_data
+
+
+# Files
