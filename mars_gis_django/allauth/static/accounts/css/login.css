@@ -1,0 +1,65 @@
+@import url(https://fonts.googleapis.com/css?family=Exo:100,200,400);
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:700,400,300);
+
+body{
+  margin: 0;
+  padding: 0;
+  background: rgb(103, 24, 24);
+
+  color: rgb(0, 0, 0);
+  font-family: Arial;
+  font-size: 12px;
+}
+
+.body{
+  position: absolute;
+  /* top: -20px;
+  left: -20px;
+  right: -40px;
+  bottom: -40px; */
+  width: auto;
+  height: 100%;
+  /* background-image: url(http://ginva.com/wp-content/uploads/2012/07/city-skyline-wallpapers-008.jpg); */
+  background-size: cover;
+  /* -webkit-filter: blur(5px); */
+  z-index: 0;
+}
+
+.redace{
+  position: absolute;
+  top: calc(45% - 35px);
+  left: calc(50% - 255px);
+  z-index: 2;
+}
+.sign{
+  position: absolute;
+  top: calc(40% - 35px);
+  left: calc(70% - 255px);
+  z-index: 2;
+}
+.menu{
+  position: absolute;
+  top: calc(30% - 35px);
+  left: calc(70% - 255px);
+  z-index: 2;
+}
+.redace{
+  font-size: 50px;
+  font-weight: 200;
+}
+.redace, .sign, .menu{
+  float:initial;
+  color: #fff;
+  font-family: 'Exo', sans-serif;
+}
+.sign a, .menu a{
+  color: aqua;
+}
+.sign label{
+  width:100px;
+  display: inline-block
+}
+button:hover{
+  cursor: pointer;
+  /* background-color: aqua; */
+}
