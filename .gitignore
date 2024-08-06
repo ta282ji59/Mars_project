@@ -1,0 +1,11 @@
+__MACOSX
+db
+jupyterhub
+mapserver
+mars_gis_django
+nginx
+terrain
+.env
+docker-compose.yml
+docker-down-up.sh
+ipconfig.exe
