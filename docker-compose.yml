@@ -1,7 +1,7 @@
 version: "3"
 services:
   nginx:
-    image: redace1/nginx:5.0
+    image: ta282ji/nginx:5.0
     container_name: redace1_nginx
     ports:
       - "88:80"
@@ -16,7 +16,7 @@ services:
         ipv4_address: 172.16.238.6
 
   django:
-    image: redace1/django:5.0
+    image: ta282ji/django:5.0
     container_name: redace1_django
     restart: always
     working_dir: /code
@@ -39,7 +39,7 @@ services:
         ipv4_address: 172.16.238.24
 
   mapserver:
-    image: redace1/mapserver:5.0
+    image: ta282ji/mapserver:5.0
     container_name: redace1_mapserver
     volumes:
       - ./mapserver:/maps
@@ -52,7 +52,7 @@ services:
         ipv4_address: 172.16.238.3
 
   terrainserver:
-    image: redace1/terrainserver:5.0
+    image: ta282ji/terrainserver:5.0
     container_name: redace1_terrainserver
     environment:
       - SERVE_STATIC=0
@@ -65,7 +65,7 @@ services:
         ipv4_address: 172.16.238.4
 
   postgis:
-    image: redace1/postgis:5.0
+    image: ta282ji/postgis:5.0
     container_name: redace1_postgis
     environment:
       POSTGRES_PASSWORD: anpanman
@@ -80,7 +80,7 @@ services:
         ipv4_address: 172.16.238.5
 
   jupyterhub:
-    image: redace1/jupyterhub:5.0
+    image: ta282ji/jupyterhub:5.0
     container_name: redace1_jupyterhub
     depends_on:
       - postgis
