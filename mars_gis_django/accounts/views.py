@@ -26,7 +26,7 @@ def create_jupyterhub_user(request):
 
     # JupyterHubに新しいユーザーを作成
     # jupyterhub_api_url = 'http://0.0.0.0:8000/hub/api/users'
-    jupyterhub_api_url = 'http://192.168.1.238:8000/hub/api/users'
+    jupyterhub_api_url = 'http://192.168.1.53:8000/hub/api/users'
     headers = {'Authorization': f'token {jupyterhub_api_token}'}
     
     response = requests.post(
